@@ -10,18 +10,18 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN useradd _gunicorn --no-create-home --user-group
 
 RUN apt-get update -q \
- && apt-get install -y -q \
-        postgresql-client
+  && apt-get install -y -q \
+  postgresql-client
 
 WORKDIR /app
 
 FROM base AS setup
 
-RUN pip install poetry
+RUN pip install poetry==1.8.2
 # libpq-dev for pg_config executable, which is needed for psycopg2
 RUN apt-get update -q \
- && apt-get install -y -q \
-        libpq-dev
+  && apt-get install -y -q \
+  libpq-dev
 
 ADD pyproject.toml poetry.lock /app/
 ADD connectors /app/connectors
