@@ -10,6 +10,12 @@ app.config.from_pyfile("config.py", silent=True)
 if app.config["ENV"] != "production":
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
+if app.config["CONNECTOR_PROXY_USE_WERKZEUG_MIDDLEWARE_PROXY_FIX"]:
+    from werkzeug.middleware.proxy_fix import ProxyFix
+
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1)
+
+
 # Use the SpiffConnector Blueprint, which will auto-discover any
 # connector-* packages and provide API endpoints for listing and executing
 # available services.
